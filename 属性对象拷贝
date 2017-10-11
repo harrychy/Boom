@@ -1,0 +1,34 @@
+获得对象的所有属性（不管是自身的还是继承的，以及是否可枚举），可以使用下面的函数。
+
+function inheritedPropertyNames(obj) {
+  var props = {};
+  while(obj) {
+    Object.getOwnPropertyNames(obj).forEach(function(p) {
+      props[p] = true;
+    });
+    obj = Object.getPrototypeOf(obj);
+  }
+  return Object.getOwnPropertyNames(props);
+}
+
+
+如果要拷贝一个对象，需要做到下面两件事情。
+确保拷贝后的对象，与原对象具有同样的prototype原型对象。
+确保拷贝后的对象，与原对象具有同样的属性。
+下面就是根据上面两点，编写的对象拷贝的函数。
+
+function copyObject(orig) {
+  var copy = Object.create(Object.getPrototypeOf(orig));
+  copyOwnPropertiesFrom(copy, orig);
+  return copy;
+}
+
+function copyOwnPropertiesFrom(target, source) {
+  Object
+  .getOwnPropertyNames(source)
+  .forEach(function(propKey) {
+    var desc = Object.getOwnPropertyDescriptor(source, propKey);
+    Object.defineProperty(target, propKey, desc);
+  });
+  return target;
+}
