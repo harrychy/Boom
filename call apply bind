@@ -16,3 +16,39 @@ function add(a, b) {
 add.call(this, 1, 2) // 3
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bind方法用于将函数体内的this绑定到某个对象，然后返回一个新函数。
+
+var d = new Date();
+d.getTime() // 1481869925657
+
+var print = d.getTime;
+print() // Uncaught TypeError: this is not a Date object.
+上面代码中，我们将d.getTime方法赋给变量print，然后调用print就报错了。
+这是因为getTime方法内部的this，绑定Date对象的实例，赋给变量print以后，内部的this已经不指向Date对象的实例了。
+bind方法可以解决这个问题，让log方法绑定console对象。
+
+var print = d.getTime.bind(d);//d.getTime是函数体，d是对象，返回了一个绑定好的函数。
+print() // 1481869925657
+上面代码中，bind方法将getTime方法内部的this绑定到d对象，这时就可以安全地将这个方法赋值给其他变量了。
+
+
+important:
+bind比call方法和apply方法更进一步的是，除了绑定this以外，还可以绑定原函数的参数。
+
+var add = function (x, y) {
+  return x * this.m + y * this.n;
+}
+
+var obj = {
+  m: 2,
+  n: 2
+};
+
+var newAdd = add.bind(obj, 5);
+
+newAdd(5)
+// 20
+上面代码中，bind方法除了绑定this对象，还将add函数的第一个参数x绑定成5，然后返回一个新函数newAdd，这个函数只要再接受一个参数y就能运行了。
