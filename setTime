@@ -1,0 +1,58 @@
+为了确保两次执行之间有固定的间隔，可以不用setInterval，而是每次执行结束后，使用setTimeout指定下一次执行的具体时间。
+
+var i = 1;
+var timer = setTimeout(function () {
+  alert(i++);
+  timer = setTimeout(arguments.callee, 2000);
+}, 2000);
+上面代码可以确保，下一个对话框总是在关闭上一个对话框之后2000毫秒弹出。
+
+根据这种思路，可以自己部署一个函数，实现间隔时间确定的setInterval的效果。
+
+function interval(func, wait){
+  var interv = function(){
+    func.call(null);
+    setTimeout(interv, wait);
+  };
+
+  setTimeout(interv, wait);
+}
+
+interval(function(){
+  console.log(2);
+},1000);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+下面是一个clearTimeout实际应用的例子。有些网站会实时将用户在文本框的输入，通过Ajax方法传回服务器，jQuery的写法如下。
+
+$('textarea').on('keydown', ajaxAction);
+这样写有一个很大的缺点，就是如果用户连续击键，就会连续触发keydown事件，造成大量的Ajax通信。
+这是不必要的，而且很可能会发生性能问题。正确的做法应该是，设置一个门槛值，表示两次Ajax通信的最小间隔时间。
+如果在设定的时间内，发生新的keydown事件，则不触发Ajax通信，并且重新开始计时。
+如果过了指定时间，没有发生新的keydown事件，将进行Ajax通信将数据发送出去。
+
+这种做法叫做debounce（防抖动）方法，用来返回一个新函数。
+只有当两次触发之间的时间间隔大于事先设定的值，这个新函数才会运行实际的任务。
+假定两次Ajax通信的间隔不小于2500毫秒，上面的代码可以改写成下面这样。
+
+$('textarea').on('keydown', debounce(ajaxAction, 2500))
+利用setTimeout和clearTimeout，可以实现debounce方法，该方法用于防止某个函数在短时间内被密集调用。
+具体来说，debounce方法返回一个新版的该函数，这个新版函数调用后，只有在指定时间内没有新的调用，才会执行，否则就重新计时。
+
+function debounce(fn, delay){
+  var timer = null; // 声明计时器
+  return function(){
+    var context = this;
+    var args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+
+// 用法示例
+var todoChanges = _.debounce(batchLog, 1000);
+Object.observe(models.todo, todoChanges);
+现实中，最好不要设置太多个setTimeout和setInterval，它们耗费CPU。比较理想的做法是，将要推迟执行的代码都放在一个函数里，然后只对这个函数使用setTimeout或setInterval。
