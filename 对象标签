@@ -6,3 +6,6 @@
   var obj =new Object;
   obj._proto_指向Object
 
+[[extensible]]：
+  可扩展
+  Object.isExtensible(obj)//判断obj对象是否可以扩展属性。
