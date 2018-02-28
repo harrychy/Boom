@@ -1,0 +1,15 @@
+1.var cat = new Object;
+  cat.legs = 4;
+  cat.name = 'Kitty';
+  in操作符 用来判断是否存在属性在本身或在原型链上:'legs' in cat;//true
+                                            'abc' in cat;//false
+                                            'toString' in cat;//true
+  hasOwnProperty属性 用来判断是否存在属性在本身上:cat.hasOwnProperty('legs');//true 
+                                              cat.hasOwnPorperty('toString');//false
+  propertyIsEnumerable属性 用来判断属性是否可以枚举 cat.price = {enumerable:false,value:1000}//此处设置为false 不可以枚举
+  
+2.属性枚举
+    var key;
+    for(key in cat){
+	      console.log(key);
+    }
