@@ -1,0 +1,8 @@
+[[proto]]
+[[class]]
+[[extensible]]
+
+[[proto]]:  
+  var obj =new Object;
+  obj._proto_指向Object
+
