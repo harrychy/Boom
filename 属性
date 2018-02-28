@@ -55,6 +55,19 @@ writable:false,//对象属性是否可修改,flase为不可修改，默认值为
 		obj.x; // 500
  
 4.属性标签
-	通过getOwnPropertyDescriptor查看对象上某个属性拥有什么标签
-	Object.getOwnPropertyDescriptor({pro : true}, 'pro');//Object.getOwnPropertyDescriptor(obj, prop)
+	getOwnPropertyDescriptor：
+		通过getOwnPropertyDescriptor查看对象上某个属性拥有什么标签
+		Object.getOwnPropertyDescriptor({pro : true}, 'pro');//Object.getOwnPropertyDescriptor(obj, prop)
+	
+	defineProperty：	
+	同样的也可以通过Object.defineProperty来添加属性标签//Object.defineProperties用来设置对象的多个属性标签
+		var person = {};
+		Object.defineProperty(person, 'name', {
+    		configurable : false,
+    		writable : false,
+    		enumerable : true,
+    		value : "Bosn Ma"
+		});
+	通过Object.keys（person）//填入对象名，自动遍历出所有可以遍历的属性名，enumerable为false不可以遍历。使用效果和for-in相同。
+	
 	
