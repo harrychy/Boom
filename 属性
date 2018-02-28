@@ -13,3 +13,26 @@
     for(key in cat){
 	      console.log(key);
     }
+
+3.getter/setter 读写属性的方式
+	var man = {
+    	  weibo : '@Bosn',
+    	  $age : null,
+    	  get age() {
+        	  if (this.$age == undefined) {
+            	  return new Date().getFullYear() - 1988;
+        	  } else {
+            	  return this.$age;
+        	  }
+    	  },
+    	  set age(val) {
+        	  val = +val;
+        	  if (!isNaN(val) && val > 0 && val < 150) {//isNaN()用来检测NaN，该值表示一个非法的数字
+            	  this.$age = +val;
+        	  } else {
+            	  throw new Error('Incorrect val = ' + val);
+        	  }
+    	  }
+	}
+ get/set与原型链：
+ 	
