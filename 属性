@@ -1,6 +1,14 @@
+
+configurable:false,//能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true
+enumerable:false,//对象属性是否可通过for-in循环，flase为不可循环，默认值为true
+writable:false,//对象属性是否可修改,flase为不可修改，默认值为true
+
 1.var cat = new Object;
   cat.legs = 4;
   cat.name = 'Kitty';
+  
+  
+  
   in操作符 用来判断是否存在属性在本身或在原型链上:'legs' in cat;//true
                                             'abc' in cat;//false
                                             'toString' in cat;//true
@@ -40,5 +48,13 @@
 		obj.z; // 100;
 		delete obj.z;
 		obj.z; // back to 1
-
+	用defineProperty写入的属性，不能更改，单将属性中的writable写为true，就可以更改了。
+	Object.defineProperty(obj, 'x', {writable:true, configurable:true, value : 100});
+		obj.x; // 100
+		obj.x = 500;
+		obj.x; // 500
+ 
+4.属性标签
+	通过getOwnPropertyDescriptor查看对象上某个属性拥有什么标签
+	Object.getOwnPropertyDescriptor({pro : true}, 'pro');//Object.getOwnPropertyDescriptor(obj, prop)
 	
