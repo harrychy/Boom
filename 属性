@@ -35,4 +35,10 @@
     	  }
 	}
  get/set与原型链：
- 	
+ 	如果原型链上存在通过get设置的z属性，这在实例上不可以通过obj.z的方式写入属性。
+	只能Object.defineProperty(obj, 'z', {value : 100, configurable: true});//只能用defineProperty的方法写
+		obj.z; // 100;
+		delete obj.z;
+		obj.z; // back to 1
+
+	
